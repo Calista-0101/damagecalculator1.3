@@ -1,3 +1,3 @@
 # damagecalculator
 
-## http://127.0.0.1:5500/damage-result.html
+## http://127.0.0.1:5500/index.html
