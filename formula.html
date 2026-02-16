@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Formula</title>
+<style>
+  :root{ --bg:#0b0f1a; --line:#1e2a4a; --txt:#e8f0ff; --accent:#00e5ff; --accent2:#7cffcb; --accent3:#ff6bd6; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0; background:radial-gradient(1000px 700px at 70% -10%, #13203d 0%, var(--bg) 55%) fixed; color:var(--txt);
+        font:16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto; display:flex; align-items:center; justify-content:center;}
+  .card{width:min(960px, 95vw); border:1px solid var(--line); border-radius:14px; padding:16px;
+        background:linear-gradient(180deg, rgba(0,229,255,.05), rgba(124,255,203,.05))}
+  .grid{display:grid; gap:12px; grid-template-columns:repeat(7, 1fr)}
+  input[type=number]{width:100%; padding:10px 12px; border-radius:10px; border:1px solid #2c426f; background:#0d1530; color:var(--txt)}
+  .out{margin-top:12px; padding:12px; border:1px solid var(--line); border-radius:10px; font-family:ui-monospace, Menlo, Consolas, monospace}
+  .value{
+    margin-top:10px; text-align:center; font-size:56px; font-variant-numeric:tabular-nums;
+    background:linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  @media (max-width:980px){ .grid{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+  <div class="card">
+    <!-- numeric inputs only -->
+    <div class="grid">
+      <input id="flat"   type="number" step="0.0001" placeholder="flat Σ"   value="77.95">
+      <input id="atk"    type="number" step="0.0001" placeholder="atk"      value="72.12">
+      <input id="pct"    type="number" step="0.0001" placeholder="% Σ"      value="73.71">
+      <input id="crit"   type="number" step="0.0001" placeholder="crit %"   value="0">
+      <input id="res"    type="number" step="0.0001" placeholder="res %"    value="0">
+      <input id="final"  type="number" step="0.0001" placeholder="final %"  value="10.4">
+      <input id="coeff"  type="number" step="0.01"   placeholder="coeff"    value="1.2">
+    </div>
+
+    <!-- outputs -->
+    <div id="line" class="out"></div>
+    <div id="val" class="value">0</div>
+  </div>
+
+<script>
+const ids=['flat','atk','pct','crit','res','final','coeff'];
+function g(id){return document.getElementById(id)}
+function v(id){return parseFloat(g(id).value)||0}
+function fmt(n,d=4){return (+n).toFixed(d)}
+function calc(){
+  const flat=v('flat'), atk=v('atk'), pct=v('pct')/100, crit=1+v('crit')/100, res=1+v('res')/100, fin=1+v('final')/100, coeff=v('coeff')||1;
+  const atkPct=atk*pct, base=flat+atkPct, mult=crit*res*fin*coeff, result=base*mult;
+  g('line').textContent = `${fmt(flat)} + (${fmt(atk,2)}×${fmt(pct,6)}) = ${fmt(base)} ; ×${fmt(crit,6)} ×${fmt(res,6)} ×${fmt(fin,6)} ×${fmt(coeff,2)} = ${result.toFixed(2)}`;
+  g('val').textContent = result.toFixed(2);
+}
+ids.forEach(id=>g(id).addEventListener('input',calc));
+calc(); // initial
+</script>
+</body>
+</html>

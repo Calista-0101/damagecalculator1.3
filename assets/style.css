@@ -1,0 +1,83 @@
+/* ========== assets/style.css (FINAL) ========== */
+:root{
+  --bg:#f5f6f8;
+  --nav-bg:#2f3a4a; --nav-bg-h:#3a475b; --nav-txt:#fff;
+  --panel:#fff; --line:#e6e8ec; --line-d:#d6d9de;
+  --txt:#242a33; --muted:#7a8699;
+  --primary:#2d6cdf; --primary-h:#225acc;
+  --danger:#e05353; --danger-h:#cc4343;
+  --focus:rgba(45,108,223,.18); --shadow:0 6px 20px rgba(20,28,40,.08);
+  --gold:#D4AF37; /* 金色 */
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--txt);
+  font:16px/1.5 "Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+  display:flex;flex-direction:column;min-height:100%;
+}
+/* Header & Nav */
+header{background:var(--nav-bg);color:var(--nav-txt);padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+h1{margin:0;font-size:20px;letter-spacing:.2px}
+nav{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:12px 20px 14px;background:var(--nav-bg);color:var(--nav-txt);border-top:1px solid rgba(255,255,255,.06);align-items:center}
+a.tab{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;transition:background .15s,transform .15s}
+a.tab:hover{background:var(--nav-bg-h);transform:translateY(-1px)}
+a.tab.active{background:#42526b}
+/* 中央容器 */
+main{flex:1;display:flex;justify-content:center;padding:24px 16px 32px}
+.container{width:100%;max-width:1080px;margin:0 auto}
+/* Grid */
+.grid{display:grid;gap:18px;grid-template-columns:repeat(12,1fr)}
+.col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-12{grid-column:1/-1}
+@media (max-width:1140px){.col-3,.col-4,.col-6,.col-8{grid-column:1/-1}}
+/* 卡片 */
+.panel,.card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:16px;box-shadow:var(--shadow)}
+h2{margin:0 0 10px;font-size:18px;color:#1d2735} h3{margin:0 0 10px;font-size:15px;color:#2f3a4a}
+/* 表單 */
+.row{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+label{font-size:13px;color:#4a5568}
+input[type=number],input[type=text]{
+  width:100%;height:38px;padding:8px 10px;border-radius:6px;border:1px solid var(--line-d);
+  background:#fff;color:#1f2a37;outline:none;transition:border-color .15s,box-shadow .15s
+}
+input[type=number]:focus,input[type=text]:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--focus)}
+/* 按鈕 */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 14px;border-radius:8px;border:1px solid transparent;cursor:pointer;user-select:none;font-weight:600;letter-spacing:.2px;transition:background .15s,box-shadow .15s,transform .15s}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(45,108,223,.2)}
+.btn-primary:hover{background:var(--primary-h);transform:translateY(-1px)}
+.btn-danger{background:var(--danger);color:#fff;box-shadow:0 2px 8px rgba(224,83,83,.18)}
+.btn-danger:hover{background:var(--danger-h);transform:translateY(-1px)}
+.btn-ghost{background:#fff;color:#2f3a4a;border-color:var(--line-d)}
+.btn-ghost:hover{background:#f3f4f6}
+/* 分段選項 */
+.seg2{display:inline-flex;border:1px solid var(--line-d);border-radius:8px;overflow:hidden;background:#fff;margin-bottom:8px}
+.seg2 input{display:none}
+.seg2 label{padding:8px 12px;cursor:pointer;color:#42526b;user-select:none}
+.seg2 input:checked+label{background:#e9eefb;color:#234aa9}
+/* 公式框 & 結果數字 */
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;white-space:pre-wrap;color:#374151;background:#fff;border:1px dashed var(--line-d);padding:12px;border-radius:8px}
+.value{
+  text-align:center !important;
+  font-variant-numeric:tabular-nums;
+  font-size:48px;line-height:1.15;letter-spacing:.4px;
+  color:var(--gold) !important; /* 金色 */
+}
+.box{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#4b5563}
+/* Footer */
+footer{text-align:center;padding:18px;color:#6b7280;background:transparent;border-top:1px solid var(--line)}
+/* Focus visible */
+:where(a,button,input).tab:focus-visible,:where(a,button,input).btn:focus-visible,:where(input):focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:6px}
+
+
+/* ================================
+   結果數字改為金色（僅影響 #N_out / #S_out）
+   ================================ */
+#N_out,
+#S_out {
+  color: #D4AF37 !important;                   /* 金色 */
+  -webkit-text-fill-color: #D4AF37 !important; /* 若之前用過漸層字，需要這行覆蓋透明字 */
+  background: none !important;                 /* 移除原本的漸層背景（若有） */
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  text-shadow: none !important;                /* 若有螢光陰影，移除 */
+}

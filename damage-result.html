@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>造成傷害結果</title>
+  <!-- 正確引入樣式（依你目錄結構調整路徑） -->
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .seg2{display:flex; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#0c1329; margin-bottom:14px}
+    .seg2 input{display:none}
+    .seg2 label{flex:1; text-align:center; padding:12px; cursor:pointer; color:#b9ccf2}
+    .seg2 input:checked+label{background:linear-gradient(180deg, rgba(255,107,214,.22), rgba(0,229,255,.16)); color:#fff}
+    .hidden{display:none}
+    .calc-box{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    .calc-box .row{display:grid; grid-template-columns:1.2fr 1fr; gap:10px; align-items:center}
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .three{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px}
+    .out{
+      font-size:60px; text-align:center; font-variant-numeric:tabular-nums;
+      background:linear-gradient(90deg,#7cffcb,#00e5ff,#ff6bd6);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent
+    }
+  </style>
+</head>
+<body>
+  <header><h1>造成傷害結果</h1></header>
+
+  <nav>
+    <a class="tab" href="damage-result.html">造成傷害結果</a>
+    <a class="tab" href="taken.html">承受傷害</a>
+    <a class="tab" href="taken-result.html">承受結果</a>
+    <a class="tab" href="dps.html">DPS</a>
+  </nav>
+
+  <main class="grid">
+    <!-- 公式（照你指定文字） -->
+    <section class="panel col-12">
+      <h2>公式</h2>
+      <div class="formula">
+最終造成傷害 = 
+[
+  (攻擊力 + 傷害提高(平) + 元素傷害提高(平) + 普攻/技能傷害提高(平) + 近/遠/法術傷害提高(平))
+    +
+  (攻擊力) × (傷害% + 元素傷害% + 普攻/技能傷害% + 近/遠/法術傷害%)
+]
+ × (1 + 爆擊傷害%)
+ × (1 + 元素克制%)
+ × (1 + 最終傷害%)
+ × 係數
+      </div>
+    </section>
+
+    <section class="card col-12">
+      <!-- 分頁 -->
+      <div class="seg2" role="tablist" aria-label="動作">
+        <input id="tab-n" name="tab" type="radio" checked>
+        <label for="tab-n">普通攻擊</label>
+        <input id="tab-s" name="tab" type="radio">
+        <label for="tab-s">技能</label>
+      </div>
+
+      <!-- 普通攻擊（預設值：你的面板） -->
+      <div id="pane-n">
+        <div class="calc-box">
+          <!-- 輸入 -->
+          <div class="panel">
+            <h3>輸入</h3>
+
+            <div class="row">
+              <label for="N_atk">攻擊力</label>
+              <input id="N_atk" type="number" step="0.01" value="72.12">
+            </div>
+
+            <div class="row">
+              <label for="N_coeff">技能係數(%)</label>
+              <input id="N_coeff" type="number" step="0.01" value="1.20">
+            </div>
+
+            <div class="row">
+              <label>傷害提高 ／ 傷害%</label>
+              <div class="two">
+                <input id="N_dmgF" type="number" step="0.01" value="4.14">
+                <input id="N_dmgP" type="number" step="0.01" value="12.46">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>元素傷害提高 ／ 元素傷害%</label>
+              <div class="two">
+                <input id="N_elemF" type="number" step="0.01" value="0">
+                <input id="N_elemP" type="number" step="0.01" value="0">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>類型傷害提高（近/遠/法） ／ 類型傷害%</label>
+              <div class="two">
+                <input id="N_classF" type="number" step="0.01" value="0">
+                <input id="N_classP" type="number" step="0.01" value="45.65">
+              </div>
+            </div>
+
+            <div class="row">
+              <label for="N_classTempP">臨時類型加成（%）</label>
+              <input id="N_classTempP" type="number" step="0.01" value="0">
+            </div>
+
+            <div class="row">
+              <label>武器傷害提高（普攻） ／ 武器傷害%（普攻）</label>
+              <div class="two">
+                <input id="N_wpnF" type="number" step="0.01" value="1.69">
+                <input id="N_wpnP" type="number" step="0.01" value="15.6">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>森屬傷害提高 ／ 森屬傷害%</label>
+              <div class="two">
+                <input id="N_forestF" type="number" step="0.01" value="0">
+                <input id="N_forestP" type="number" step="0.01" value="0">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>乘區（%）：爆 ／ 克 ／ 終</label>
+              <div class="three">
+                <input id="N_crit" type="number" step="0.01" value="0">
+                <input id="N_elemRes" type="number" step="0.01" value="0">
+                <input id="N_finalMul" type="number" step="0.01" value="10.4">
+              </div>
+            </div>
+
+            <div class="two" style="margin-top:10px">
+              <span></span>
+              <button type="button" class="ghost" id="btn-reset-normal">清空分頁</button>
+            </div>
+          </div>
+
+          <!-- 結果 -->
+          <div class="panel">
+            <h3>結果</h3>
+            <div id="N_out" class="out">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 技能（預設值：你的風靈箭場景） -->
+      <div id="pane-s" class="hidden">
+        <div class="calc-box">
+          <!-- 輸入 -->
+          <div class="panel">
+            <h3>輸入</h3>
+
+            <div class="row">
+              <label for="S_atk">攻擊力</label>
+              <input id="S_atk" type="number" step="0.01" value="72.12">
+            </div>
+
+            <div class="row">
+              <label for="S_coeff">技能係數(%)</label>
+              <input id="S_coeff" type="number" step="0.01" value="4.00">
+            </div>
+
+            <div class="row">
+              <label>傷害提高 ／ 傷害%</label>
+              <div class="two">
+                <input id="S_dmgF" type="number" step="0.01" value="4.14">
+                <input id="S_dmgP" type="number" step="0.01" value="12.46">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>元素傷害提高 ／ 元素傷害%</label>
+              <div class="two">
+                <input id="S_elemF" type="number" step="0.01" value="0">
+                <input id="S_elemP" type="number" step="0.01" value="0">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>類型傷害提高（近/遠/法） ／ 類型傷害%</label>
+              <div class="two">
+                <input id="S_classF" type="number" step="0.01" value="0">
+                <input id="S_classP" type="number" step="0.01" value="45.65">
+              </div>
+            </div>
+
+            <div class="row">
+              <label for="S_classTempP">臨時類型加成（%）</label>
+              <input id="S_classTempP" type="number" step="0.01" value="0">
+            </div>
+
+            <div class="row">
+              <label>技能傷害提高（技能） ／ 技能傷害%（技能）</label>
+              <div class="two">
+                <input id="S_skF" type="number" step="0.01" value="1.69">
+                <input id="S_skP" type="number" step="0.01" value="23.38">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>森屬傷害提高 ／ 森屬傷害%</label>
+              <div class="two">
+                <input id="S_forestF" type="number" step="0.01" value="3.39">
+                <input id="S_forestP" type="number" step="0.01" value="47.02">
+              </div>
+            </div>
+
+            <div class="row">
+              <label>乘區（%）：爆 ／ 克 ／ 終</label>
+              <div class="three">
+                <input id="S_crit" type="number" step="0.01" value="0">
+                <input id="S_elemRes" type="number" step="0.01" value="0">
+                <input id="S_finalMul" type="number" step="0.01" value="10.4">
+              </div>
+            </div>
+
+            <div class="two" style="margin-top:10px">
+              <span></span>
+              <button type="button" class="ghost" id="btn-reset-skill">清空分頁</button>
+            </div>
+          </div>
+
+          <!-- 結果 -->
+          <div class="panel">
+            <h3>結果</h3>
+            <div id="S_out" class="out">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>琳琳出品</footer>
+
+  <!-- 正確引入腳本（依你目錄結構調整路徑） -->
+  <script src="assets/app.js"></script>
+  <script>
+    /* 分頁切換 */
+    const tabN=document.getElementById('tab-n'), tabS=document.getElementById('tab-s');
+    const paneN=document.getElementById('pane-n'), paneS=document.getElementById('pane-s');
+    tabN.addEventListener('change',()=>{paneN.classList.remove('hidden');paneS.classList.add('hidden');});
+    tabS.addEventListener('change',()=>{paneS.classList.remove('hidden');paneN.classList.add('hidden');});
+
+    /* 普攻：即時計算 + 清空分頁=全0（已填預設值） */
+    const N_IDS=['N_atk','N_coeff','N_dmgF','N_dmgP','N_elemF','N_elemP','N_classF','N_classP','N_classTempP','N_wpnF','N_wpnP','N_forestF','N_forestP','N_crit','N_elemRes','N_finalMul'];
+    function readNormal(){ return {
+      act:'normal',
+      atk:+N_atk.value||0, coeff:+N_coeff.value||0,
+      dmgF:+N_dmgF.value||0, dmgP:+N_dmgP.value||0,
+      elemF:+N_elemF.value||0, elemP:+N_elemP.value||0,
+      classF:+N_classF.value||0, classP:+N_classP.value||0, classTempP:+N_classTempP.value||0,
+      wpnF:+N_wpnF.value||0, wpnP:+N_wpnP.value||0,
+      forestF:+N_forestF.value||0, forestP:+N_forestP.value||0,
+      crit:+N_crit.value||0, elemRes:+N_elemRes.value||0, finalMul:+N_finalMul.value||0,
+      save:false
+    }; }
+    function recalcNormal(){ const r=__calcOnce(readNormal()); document.getElementById('N_out').textContent = r.result.toFixed(2); }
+    function resetNormalZero(){ N_IDS.forEach(id=>document.getElementById(id).value='0'); recalcNormal(); }
+    N_IDS.forEach(id=>document.getElementById(id).addEventListener('input',recalcNormal));
+    document.getElementById('btn-reset-normal').addEventListener('click',resetNormalZero);
+
+    /* 技能：即時計算 + 清空分頁=全0（已填預設值） */
+    const S_IDS=['S_atk','S_coeff','S_dmgF','S_dmgP','S_elemF','S_elemP','S_classF','S_classP','S_classTempP','S_skF','S_skP','S_forestF','S_forestP','S_crit','S_elemRes','S_finalMul'];
+    function readSkill(){ return {
+      act:'skill',
+      atk:+S_atk.value||0, coeff:+S_coeff.value||0,
+      dmgF:+S_dmgF.value||0, dmgP:+S_dmgP.value||0,
+      elemF:+S_elemF.value||0, elemP:+S_elemP.value||0,
+      classF:+S_classF.value||0, classP:+S_classP.value||0, classTempP:+S_classTempP.value||0,
+      skF:+S_skF.value||0, skP:+S_skP.value||0,
+      forestF:+S_forestF.value||0, forestP:+S_forestP.value||0,
+      crit:+S_crit.value||0, elemRes:+S_elemRes.value||0, finalMul:+S_finalMul.value||0,
+      save:false
+    }; }
+    function recalcSkill(){ const r=__calcOnce(readSkill()); document.getElementById('S_out').textContent = r.result.toFixed(2); }
+    function resetSkillZero(){ S_IDS.forEach(id=>document.getElementById(id).value='0'); recalcSkill(); }
+    S_IDS.forEach(id=>document.getElementById(id).addEventListener('input',recalcSkill));
+    document.getElementById('btn-reset-skill').addEventListener('click',resetSkillZero);
+
+    /* 初始：以預設值計算一次 */
+    recalcNormal();
+    recalcSkill();
+  </script>
+</body>
+</html>

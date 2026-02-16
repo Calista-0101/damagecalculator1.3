@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>承受結果</title>
+  <!-- 正確引入樣式（注意：這是 <link> 標籤，不是純文字） -->
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header><h1>承受結果</h1></header>
+
+  <!-- 導覽列：使用 <a href>，不是純文字 -->
+  <nav>
+    <a class="tab" href="damage-result.html">造成傷害結果</a>
+    <a class="tab" href="taken.html">承受傷害</a>
+    <a class="tab" href="taken-result.html">承受結果</a>
+    <a class="tab" href="dps.html">DPS</a>
+  </nav>
+
+  <main class="grid">
+    <section class="panel col-12">
+      <div class="formula">
+最終所受傷害 = 
+(所受傷害)
+ × [ 1000 / (1000 + 防禦力) ]
+ × Π(1 - 抗性% [疊乘])
+      </div>
+    </section>
+
+    <section class="card col-12">
+      <h3>結果</h3>
+      <div id="value" class="value">0</div>
+      <div id="detail" class="box"></div>
+    </section>
+  </main>
+
+  <footer>琳琳出品</footer>
+
+  <!-- 正確引入腳本（注意：這是 <script src> 標籤，不是純文字） -->
+  <script src="assets/app.js"></script>
+  <script>
+    // 顯示 taken.html 計算後寫入的結果
+    const v = localStorage.getItem('taken_result_value') || '0';
+    document.getElementById('value').textContent = v;
+
+    const b = localStorage.getItem('taken_breakdown');
+    if (b) {
+      const o = JSON.parse(b);
+      document.getElementById('detail').textContent =
+`輸入 = ${o.incoming}
+防禦修正 = 1000/(1000+${o.def}) = ${o.defMul}
+抗性疊乘 = ${o.mult}`;
+    }
+  </script>
+</body>
+</html>

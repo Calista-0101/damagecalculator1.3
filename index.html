@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>計算機</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header><h1>計算機</h1></header>
+  <nav>
+    <a class="tab" href="damage-result.html">造成傷害結果</a>
+    <a class="tab" href="taken.html">承受傷害</a>
+    <a class="tab" href="taken-result.html">承受結果</a>
+    <a class="tab" href="dps.html">DPS</a>
+  </nav>
+
+  <main>
+    <section class="panel col-12">
+      <div class="formula">
+最終造成傷害 = 
+[
+    (攻擊力 + 傷害提高 + 元素傷害提高 + 普攻/技能傷害提高 + 近戰/遠程/法術傷害提高)
+      +
+    (攻擊力) x (傷害% + 元素傷害% + 普攻/技能傷害% + 近戰/遠程/法術傷害%)
+]
+ x (1 + 爆擊傷害%)
+ x (1 + 元素克制%)
+ x (1 + 最終傷害%[疊乘])
+ x 普攻/技能係數
+      </div>
+    </section>
+  </main>
+
+  <footer>琳琳出品</footer>
+</body>
+</html>

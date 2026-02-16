@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>承受傷害</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header><h1>承受傷害</h1></header>
+
+  <nav>
+    <a class="tab" href="damage-result.html">造成傷害結果</a>
+    <a class="tab" href="taken.html">承受傷害</a>
+    <a class="tab" href="taken-result.html">承受結果</a>
+    <a class="tab" href="dps.html">DPS</a>
+  </nav>
+
+  <main class="grid">
+    <section class="panel col-12">
+      <div class="formula">
+最終所受傷害 = 
+(所受傷害)
+ × [ 1000 / (1000 + 防禦力) ]
+ × Π(1 - 抗性% [疊乘])
+      </div>
+    </section>
+
+    <section class="card col-6">
+      <h3>輸入</h3>
+      <div class="row">
+        <label for="inDmg">所受傷害</label>
+        <input id="inDmg" type="number" step="0.01" value="1000">
+      </div>
+      <div class="row">
+        <label for="def">防禦力</label>
+        <input id="def" type="number" step="1" value="0">
+      </div>
+    </section>
+
+    <section class="card col-6">
+      <h3>抗性（可多條；填百分比數字）</h3>
+      <div id="resists" class="grid" style="grid-template-columns:1fr;"></div>
+      <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+        <button type="button" onclick="addResistRow(0)">新增抗性</button>
+        <button type="button" onclick="calcTaken(); location.href='taken-result.html';">計算 → 結果頁</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>琳琳出品</footer>
+
+  <script src="assets/app.js"></script>
+  <script>
+    // 預設放一條 0% 方便你加更多
+    document.addEventListener('DOMContentLoaded', () => addResistRow(0));
+  </script>
+</body>
+</html>
